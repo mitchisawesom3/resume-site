@@ -1,0 +1,77 @@
+<html>
+  <head>
+    <title>Professional Experience</title>
+    <script defer src="index.js"></script>
+    <script defer src="onclick.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://fonts.googleapis.com/css?family=Public Sans" rel="stylesheet" />
+  </head
+  <body>
+    <!-- Header -->
+    <div class="header">
+      <h1>Mitchell Bounds</h1>
+      <p>Diligent <b>Senior Linux Administrator with over 10 years of experience.</b> Good analytical and problem solving skills to identify and resolve technical issues. Excellent communication skills along with high level of attention for detail. I have a passion for learning new things and believe that learning is an ongoing process.</p>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+      <a href="index.html">Home</a>
+      <a class="current-page" href="experience.html">Professional Experience</a>
+      <a href="#">Link</a>
+      <a href="#">Link</a>
+    </div>
+
+    <!-- The flexible grid (content) -->
+    <div class="row">
+      <div class="side">
+        <h2><a href="#" onclick="hideShowSenior(); return false;">Senior Linux Administrator</a></h2>
+        <h2><a href="#" onclick="hideShowAdmin(); return false;">Linux Administrator</a></h2>
+      </div>
+      <div class="main">
+        <div id="noselection">
+          <h4>Select a job title from the left to learn more.</h4>
+        </div>
+        <div id="senior" style="display: none;">
+          <h4>Senior Linux Administrator</h4>
+          <ul>
+            <li>Advanced systems troubleshooting</li>
+            <li>Utilize Ansible and Puppet for automation</li>
+            <li>Performing disaster recovery restorations from remote servers</li>
+            <li>Perform InnoDB recovery for corrupt MySQL databases</li>
+            <li>Backup customer data to a temporary remote host, reimage server, then restore customer data.</li>
+            <li>Server provisioning with Ansible and KVM/OpenStack</li>
+            <li>Ensuring server meets PCI Compliance standards</li>
+            <li>File system repair and recovery</li>
+            <li>LVM, Software RAID, and Hardware RAID</li>
+            <li>Create and update tools utilized to automate common tasks with Bash, Perl, PHP, and Python.<br />
+                Examples: Fix file permissions (Perl), Temporary password script (Perl), Install specific PHP version and configure for use (Bash)</li>
+            <li>Networking (BIND, PowerDNS)</li>
+            <li>Helped with scripts utilized to migrate thousands of servers data to new data center</li>
+            <li>Create and update internal processes and procedures in Confluence</li>
+            <li>Kernel maintenance</li>
+            <li>Work with ISP's on getting IP addresses removed from email blacklists</li>
+            <li>Attack Mitigation (csf, .htaccess, iptables, mod_qos, mod_security)</li>
+            <li>Systems monitoring utilizing Graylog, Prometheus, Zabbix</li>
+            <li>Create and administer containerized environments for customers utilizing KVM and OpenVZ</li>
+          </ul>
+        </div>
+        <div id="admin" style="display: none;">
+          <h4>Linux Administrator</h4>
+          <ul>
+            <li>Perform server reboots and investigate cause</li>
+            <li>Install software via yum/rpm/apt</li>
+            <li>Troubleshoot email, DNS, and SSL issues, web application</li>
+            <li>Install and configure Apache/MySQL/PHP, BIND via command line</li>
+            <li>Restore customer data from weekly NAS backups using rsync</li>
+            <li>Manage server firewalls (iptables, csf)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+      <h2>You are visitor <div class="website-counter"></div></h2>
+    </div>
+  </body>
+</html>
