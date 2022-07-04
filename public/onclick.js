@@ -1,31 +1,28 @@
 function hideShowAdmin() {
-  var noselect = document.getElementById("noselection");
+  var noselecta = document.getElementById("noselecta");
+  var text = noselecta.textContent;
   var admin = document.getElementById("admin");
   var senior = document.getElementById("senior");
-  if (noselect.style.display != "none") {
-    noselect.style.display = "none";
-  } else if ( ( admin.style.display === "" ) && ( senior.style.display === "none" ) ) {
-    noselect.style.display = "";
-  }
-  if (admin.style.display === "none") {
+  if ( noselecta.textContent.includes("Show") ) {
+    noselecta.textContent = text.replace("Show More","Hide");
     admin.style.display = "";
-  } else {
+  } else if ( noselecta.textContent.includes("Hide") ) {
+    noselecta.textContent = text.replace("Hide","Show More");
     admin.style.display = "none";
   }
 }
 
 function hideShowSenior() {
-  var noselect = document.getElementById("noselection");
+  const noselectb = document.getElementById("noselectb");
   var admin = document.getElementById("admin");
   var senior = document.getElementById("senior");
-  if (noselect.style.display != "none") {
-    noselect.style.display = "none";
-  } else if ( ( admin.style.display === "none" ) && ( senior.style.display === "" ) ) {
-    noselect.style.display = "";
-  }
-  if (senior.style.display === "none") {
+  if ( noselectb.innerText.includes("Show") ) {
+    const text = noselectb.innerText;
+    noselectb.innerText = text.replace("Show More","Hide");
     senior.style.display = "";
-  } else {
+  } else if ( noselectb.textContent.includes("Hide") ) {
+    const text = noselectb.textContent;
+    noselectb.textContent = text.replace("Hide","Show More");
     senior.style.display = "none";
   }
 }
