@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome</title>
+    <script defer src="index.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <link href='https://fonts.googleapis.com/css?family=Public Sans' rel='preload' as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Public Sans'></noscript>
+  </head>
+  <body>
+    <!-- Header -->
+    <div class="header">
+      <h1>Mitchell Bounds</h1>
+      <p>Diligent <b>Senior Linux Administrator with over 10 years of experience.</b> Good analytical and problem solving skills to identify and resolve technical issues. Excellent communication skills along with high level of attention for detail. I have a passion for learning new things and believe that learning is an ongoing process.</p>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+      <a href="index.html">Home</a>
+      <a href="experience.html">Professional Experience</a>
+      <a href="#">Link</a>
+      <a class="current-page" href="about.html">About</a>
+    </div>
+
+    <!-- The flexible grid (content) -->
+    <div class="row">
+      <div class="side">
+        <h2></h2>
+      </div>
+      <div class="main">
+        <h2>This Website</h2>
+        <p>This website was created to learn about AWS, Infrastructure as Code, Source Control using Git, and CI/CD. It is currently created using a S3 static website, DynamoDB Database, API Gateway, Lambda Functions utilizing Python code to communicate with the DB, served via CloudFront, and the DNS is configured in Google Domains. I created this site using HTML, CSS, and Javascript. The code is stored in a <a href="https://github.com/mitchisawesom3/resume-site">GitHub Repo</a> where GitHub actions is configured to automatically push the code to the S3 bucket. I will also be creating a Serverless Application Model template and store this within another GitHub repository so I can utilize GitHub actions to automatically push changes to my infrastructure.</p>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+      <h2>You are visitor <div class="website-counter"></div></h2>
+    </div>
+  </body>
+</html>
