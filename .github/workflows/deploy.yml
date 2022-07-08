@@ -32,7 +32,7 @@ jobs:
 
       - name: Create Secrets
         if: ${{ env.SECRETS_CHECK }}
-        run: gh secret set AWS_ACCESS_KEY_ID --body "$AWS_KEY_ID"; gh secret set AWS_SECRET_ACCESS_KEY --body "$AWS_SECRET_ACCESS_KEY"
+        run: gh secret set AWS_KEY_ID --body "$AWS_KEY_ID"; gh secret set AWS_SECRET_ACCESS_KEY --body "$AWS_SECRET_ACCESS_KEY"
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
