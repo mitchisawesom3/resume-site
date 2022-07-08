@@ -12,11 +12,11 @@ request.onload = function () {
   // Begin accessing JSON data here
   var data = JSON.parse(this.response)
   if (request.status >= 200 && request.status < 400) {
-   counterContainer.innerHTML = data['body'];
+   counterContainer.innerHTML = data;
   } else {
     const errorMessage = document.createElement('marquee')
     errorMessage.textContent = 'Failed to query database'
-    app.appendChild(errorMessage)
+    document.body.appendChild(errorMessage)
   }
 }
 
