@@ -38,7 +38,7 @@ jobs:
           url: https://api.github.com/repos/${{ github.repository }}/actions/secrets/AWS_KEY_ID
           method: 'PUT'
           customHeaders: '{"Accept": "application/vnd.github+json","Authorization": "token ${{ secrets.GITHUB_TOKEN }}"}'
-          data: '{"encrypted_value":${{ env.AWS_KEY_ID }},"key_id":"AWS_KEY_ID"}'
+          data: '{"encrypted_value":"${{ env.AWS_KEY_ID }}","key_id":"AWS_KEY_ID"}'
 
 #      - name: Create Secrets
 #        if: ${{ env.SECRETS_CHECK }}
