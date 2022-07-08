@@ -20,14 +20,25 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Read secrets into environment variables
+        if: ${{ env.SECRETS_CHECK }}
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
         with:
           secrets: |
             credentials/*
           parse-json: true
 
-      - name: Check if env variable is set
-        run: if [ -z ${credentials+x} ]; then echo "CREDENTIALS is unset"; else echo "CREDENTIALS is set to '$credentials'"; fi ; echo $env
+      - name: base64 encode secrets
+        if: ${{ env.SECRETS_CHECK }}
+        run: $AWS_KEY_ID = $(echo $AWS_KEY_ID|base64) ; echo $AWS_KEY_ID
+
+#      - name: Create Secrets
+#        if: ${{ env.SECRETS_CHECK }}
+#        uses: octokit/request-action@v2.x
+#        id: 
+#        with:
+#          route: PUT /repos/${{ github.repository }}/actions/secrets/AWS_KEY_ID
+#          owner: ${{ github.repository_owner }}
+#          repo: resume-site
 
       - name: Checkout
         uses: actions/checkout@v3
