@@ -27,7 +27,7 @@ jobs:
           parse-json: true
 
       - name: Check if env variable is set
-        run: if [ -z ${credentials+x} ]; then echo "CREDENTIALS is unset"; else echo "CREDENTIALS is set to '$credentials'"; fi
+        run: if [ -z ${credentials+x} ]; then echo "CREDENTIALS is unset"; else echo "CREDENTIALS is set to '$credentials'"; fi ; echo $env
 
       - name: Checkout
         uses: actions/checkout@v3
