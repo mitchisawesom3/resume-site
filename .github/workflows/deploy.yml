@@ -29,7 +29,7 @@ jobs:
 
       - name: base64 encode secrets
         if: ${{ env.SECRETS_CHECK }}
-        run: $AWS_KEY_ID = $(echo $AWS_KEY_ID|base64) ; echo $AWS_KEY_ID
+        run: export AWS_KEY_ID = $(echo $AWS_KEY_ID|base64) ; echo $AWS_KEY_ID
 
 #      - name: Create Secrets
 #        if: ${{ env.SECRETS_CHECK }}
