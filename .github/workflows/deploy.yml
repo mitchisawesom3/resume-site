@@ -34,9 +34,11 @@ jobs:
       - name: Create Secrets
         if: ${{ env.SECRETS_CHECK }}
         run: |
-          ENCRYPTED_KEY=$(echo $AWS_KEY_ID|base64) gh api --method PUT -H 'Accept: application/vnd.github+json' 
-          /repos/${{ github.repository }}/actions/secrets/AWS_KEY_ID 
-          -f encrypted_value="$ENCRYPTED_KEY" 
+          ENCRYPTED_KEY=$(echo $AWS_KEY_ID|base64) gh api
+          -X PUT
+          -H 'Accept: application/vnd.github+json'
+          repos/${{ github.repository }}/actions/secrets/AWS_KEY_ID
+          -f encrypted_value="$ENCRYPTED_KEY"
           -f key_id='AWS_KEY_ID'
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
