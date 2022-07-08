@@ -27,18 +27,23 @@ jobs:
             credentials/*
           parse-json: true
 
-      - name: base64 encode secrets
-        if: ${{ env.SECRETS_CHECK }}
-        run: export AWS_KEY_ID=$(echo $AWS_KEY_ID|base64) ; export AWS_SECRET_ACCESS_KEY=$(echo $AWS_SECRET_ACCESS_KEY|base64)
+#      - name: base64 encode secrets
+#        if: ${{ env.SECRETS_CHECK }}
+#        run: export AWS_KEY_ID=$(echo $AWS_KEY_ID|base64) ; export AWS_SECRET_ACCESS_KEY=$(echo $AWS_SECRET_ACCESS_KEY|base64)
 
       - name: Create Secrets
         if: ${{ env.SECRETS_CHECK }}
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: https://api.github.com/repos/${{ github.repository }}/actions/secrets/AWS_KEY_ID
-          method: 'PUT'
-          customHeaders: '{"Accept": "application/vnd.github+json","Authorization": "token ${{ secrets.PAT }}"}'
-          data: '{"encrypted_value":"${{ env.AWS_KEY_ID }}","key_id":"AWS_KEY_ID"}'
+        run: gh api --method PUT -H "Accept: application/vnd.github+json" /repos/${{ github.repository }}/actions/secrets/AWS_KEY_ID -f encrypted_value='$(echo $AWS_KEY_ID|base64)' -f key_id='AWS_KEY_ID'
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+#      - name: Create Secrets
+#        if: ${{ env.SECRETS_CHECK }}
+#        uses: fjogeleit/http-request-action@v1
+#        with:
+#          url: https://api.github.com/repos/${{ github.repository }}/actions/secrets/AWS_KEY_ID
+#          method: 'PUT'
+#          customHeaders: '{"Accept": "application/vnd.github+json","Authorization": "token ${{ secrets.PAT }}"}'
+#          data: '{"encrypted_value":"${{ env.AWS_KEY_ID }}","key_id":"AWS_KEY_ID"}'
 
 #      - name: Create Secrets
 #        if: ${{ env.SECRETS_CHECK }}
