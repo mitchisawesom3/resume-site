@@ -36,7 +36,7 @@ jobs:
         run: |
           gh api --method PUT -H 'Accept: application/vnd.github+json' 
           /repos/${{ github.repository }}/actions/secrets/AWS_KEY_ID 
-          -f encrypted_value='$(echo $AWS_KEY_ID|base64)' 
+          -f encrypted_value="$(echo $AWS_KEY_ID|base64)" 
           -f key_id='AWS_KEY_ID'
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
