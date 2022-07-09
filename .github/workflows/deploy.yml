@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  configure-secrets:
+  configuresecrets:
     runs-on: ubuntu-latest
     env:
       SECRETS_CHECK: ${{ (secrets.AWS_KEY_ID == '') || (secrets.AWS_SECRET_ACCESS_KEY == '') }}
@@ -83,9 +83,9 @@ jobs:
         with:
           args: --delete
         env:
-          AWS_S3_BUCKET: ${{ needs.configure-secrets.outputs.aws_bucket }}
-          AWS_ACCESS_KEY_ID: ${{ needs.configure-secrets.outputs.aws_key_id }}
-          AWS_SECRET_ACCESS_KEY: ${{ needs.configure-secrets.outputs.aws_secret_access_key }}
+          AWS_S3_BUCKET: ${{ needs.configuresecrets.outputs.aws_bucket }}
+          AWS_ACCESS_KEY_ID: ${{ needs.configuresecrets.outputs.aws_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ needs.configuresecrets.outputs.aws_secret_access_key }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           SOURCE_DIR: './public'
 
