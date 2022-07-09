@@ -55,13 +55,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Deploy if secret doesn't exist
-        if: ${{ env.SECRETS_CHECK }} || ${{ env.CF_SECRETS_CHECK }} || ${{ env.BUCKET_SECRET_CHECK }}
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --delete --exclude '.git/*' --exclude '.github/*'
-        env:
-          AWS_S3_BUCKET: ${{ env.__AWS_BUCKET }}
+#      - name: Deploy if secret doesn't exist
+#        if: ${{ env.SECRETS_CHECK }} || ${{ env.CF_SECRETS_CHECK }} || ${{ env.BUCKET_SECRET_CHECK }}
+#        uses: jakejarvis/s3-sync-action@master
+#        with:
+#          args: --delete --exclude '.git/*' --exclude '.github/*'
+#        env:
+#          AWS_S3_BUCKET: ${{ env.__AWS_BUCKET }}
 
       - name: Deploy
         uses: jakejarvis/s3-sync-action@master
