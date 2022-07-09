@@ -39,7 +39,7 @@ jobs:
 
       - name: Create Secrets for CF invalidation access
         if: ${{ env.CF_SECRETS_CHECK }}
-        run: gh secret set CF_KEY_ID --body "$CF_KEY_ID"; gh secret set CF_SECRET_ACCESS_KEY --body "$CF_SECRET_ACCESS_KEY"
+        run: gh secret set CF_KEY_ID --body "$CF_KEY_ID"; gh secret set CF_SECRET_ACCESS_KEY --body "$CF_SECRET_ACCESS_KEY"; gh secret set CF_DISTRIBUTION --body "$CF_DISTRIBUTION"
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
