@@ -48,7 +48,7 @@ jobs:
         if: ${{ env.BUCKET_SECRET_CHECK }}
         run: gh secret set AWS_BUCKET --body "$AWS_BUCKET"
         env:
-          GITHUB_TOCKET: ${{ secrets.PAT }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
 
       - name: Deploy
         uses: jakejarvis/s3-sync-action@master
