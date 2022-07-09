@@ -12,6 +12,13 @@ jobs:
       SECRETS_CHECK: ${{ (secrets.AWS_KEY_ID == '') || (secrets.AWS_SECRET_ACCESS_KEY == '') }}
       CF_SECRETS_CHECK: ${{ ( secrets.CF_KEY_ID == '') || (secrets.CF_SECRET_ACCESS_KEY == '') || (secrets.CF_DISTRIBUTION == '') }}
       BUCKET_SECRET_CHECK: ${{ secrets.AWS_BUCKET == '' }}
+    outputs:
+      aws_key_id: ${{ steps.aws_key_id.outputs.aws_key_id }}
+      aws_secret_access_key: ${{ steps.aws_secret_access_key.outputs.aws_secret_access_key }}
+      cf_key_id: ${{ steps.cf_key_id.outputs.cf_key_id }}
+      cf_secret_access_key: ${{ steps.cf_secret_access_key.outputs.cf_secret_access_key }}
+      cf_distribution: ${{ steps.cf_distribution.outputs.cf_distribution }}
+      aws_bucket: ${{ steps.aws_bucket.outputs.aws_bucket }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -49,11 +56,38 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
+      - id: aws_key_id
+        run: echo "::set-output name=aws_key_id::${{ env.__AWS_KEY_ID }}"
+      - id: aws_secret_access_key
+        run: echo "::set-output name=aws_secret_access_key::${{ env.__AWS_SECRET_ACCESS_KEY }}"
+      - id: cf_key_id
+        run: echo "::set-output name=cf_key_id::${{ env.__CF_KEY_ID }}"
+      - id: cf_secret_access_key
+        run: echo "::set-output name=cf_secret_access_key::${{ env.__CF_SECRET_ACCESS_KEY }}"
+      - id: cf_distribution
+        run: echo "::set-output name=cf_distribution::${{ env.__CF_DISTRIBUTION }}"
+      - id: aws_bucket
+        run: echo "::set-output name=aws_bucket::${{ env.__AWS_BUCKET }}"
+
   deploy:
     runs-on: ubuntu-latest
+    env:
+      SECRETS_CHECK: ${{ secrets.AWS_BUCKET == '' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Deploy if secrets aren't set
+        if: ${{ env.SECRETS_CHECK }}
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --delete
+        env:
+          AWS_S3_BUCKET: ${{ needs.configure-secrets.outputs.aws_bucket }}
+          AWS_ACCESS_KEY_ID: ${{ needs.configure-secrets.outputs.aws_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ needs.configure-secrets.outputs.aws_secret_access_key }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          SOURCE_DIR: './public'
 
       - name: Deploy
         uses: jakejarvis/s3-sync-action@master
@@ -67,6 +101,7 @@ jobs:
           SOURCE_DIR: './public'
 
       - name: Invalidate CloudFront
+        if: ${{ env.SECRETS_CHECK == 'false' }}
         uses: chetan/invalidate-cloudfront-action@v2
         env:
           DISTRIBUTION: ${{ secrets.CF_DISTRIBUTION }}
