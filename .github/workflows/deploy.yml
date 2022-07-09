@@ -28,7 +28,8 @@ jobs:
         if: ${{ env.SECRETS_CHECK }} || ${{ env.CF_SECRETS_CHECK }}
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
         with:
-          secrets: "credentials/*"
+          secrets: |
+            credentials/*
           parse-json: true
 
 #      - name: Get secrets with aws cli
