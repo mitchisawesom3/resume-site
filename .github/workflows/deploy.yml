@@ -9,8 +9,8 @@ jobs:
   configure-secrets:
     runs-on: ubuntu-latest
     env:
-      SECRETS_CHECK: ${{ (secrets.AWS_KEY_ID == '') && (secrets.AWS_SECRET_ACCESS_KEY == '') }}
-      CF_SECRETS_CHECK: ${{ ( secrets.CF_KEY_ID == '') && (secrets.CF_SECRET_ACCESS_KEY == '') }}
+      SECRETS_CHECK: ${{ (secrets.AWS_KEY_ID == '') || (secrets.AWS_SECRET_ACCESS_KEY == '') }}
+      CF_SECRETS_CHECK: ${{ ( secrets.CF_KEY_ID == '') || (secrets.CF_SECRET_ACCESS_KEY == '') || (secrets.CF_DISTRIBUTION == '') }}
       BUCKET_SECRET_CHECK: ${{ secrets.AWS_BUCKET == '' }}
     steps:
       - name: Checkout
@@ -33,19 +33,19 @@ jobs:
 
       - name: Create Secrets for repo access to AWS
         if: ${{ env.SECRETS_CHECK }}
-        run: gh secret set AWS_KEY_ID --body "$__AWS_ACCESS_KEY_ID"; gh secret set AWS_SECRET_ACCESS_KEY --body "$__AWS_SECRET_ACCESS_KEY"
+        run: gh secret set AWS_KEY_ID --body "${{ env.__AWS_ACCESS_KEY_ID }}"; gh secret set AWS_SECRET_ACCESS_KEY --body "${{ env.__AWS_SECRET_ACCESS_KEY }}"
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
       - name: Create Secrets for CF invalidation access
         if: ${{ env.CF_SECRETS_CHECK }}
-        run: gh secret set CF_KEY_ID --body "$__CF_KEY_ID"; gh secret set CF_SECRET_ACCESS_KEY --body "$__CF_SECRET_ACCESS_KEY"; gh secret set CF_DISTRIBUTION --body "$__CF_DISTRIBUTION"
+        run: gh secret set CF_KEY_ID --body "${{ env.__CF_KEY_ID }}"; gh secret set CF_SECRET_ACCESS_KEY --body "${{ env.__CF_SECRET_ACCESS_KEY }}"; gh secret set CF_DISTRIBUTION --body "${{ env.__CF_DISTRIBUTION }}"
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
       - name: Create Secret for Bucket name
         if: ${{ env.BUCKET_SECRET_CHECK }}
-        run: gh secret set AWS_BUCKET --body "$__AWS_BUCKET"
+        run: gh secret set AWS_BUCKET --body "${{ env.__AWS_BUCKET }}"
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
@@ -54,6 +54,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Deploy if secret doesn't exist
+        if: ${{ env.SECRETS_CHECK }} || ${{ env.CF_SECRETS_CHECK }} || ${{ env.BUCKET_SECRET_CHECK }}
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --delete --exclude '.git/*' --exclude '.github/*'
+        env:
+          AWS_S3_BUCKET: ${{ env.__AWS_BUCKET }}
 
       - name: Deploy
         uses: jakejarvis/s3-sync-action@master
