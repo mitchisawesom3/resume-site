@@ -30,8 +30,9 @@ jobs:
         with:
           secrets: "credentials/*"
           parse-json: true
-      - name: Get secrets with aws cli
-        if: ${{
+
+#      - name: Get secrets with aws cli
+#        if: ${{
       - name: Create Secrets for repo access to AWS
         if: ${{ env.SECRETS_CHECK }}
         run: gh secret set AWS_KEY_ID --body "$AWS_ACCESS_KEY_ID"; gh secret set AWS_SECRET_ACCESS_KEY --body "$AWS_SECRET_ACCESS_KEY"
@@ -69,6 +70,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_ACCESS_KEY_ID: ${{ secrets.CF_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.CF_SECRET_ACCESS_KEY }}
+
   test:
     runs-on: ubuntu-latest
     steps:
