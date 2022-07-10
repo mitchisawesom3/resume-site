@@ -78,7 +78,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Deploy if secrets aren't set
-        if: ${{ env.SECRETS_CHECK }}
+        if: ${{ env.SECRETS_CHECK == 'true' }}
         uses: jakejarvis/s3-sync-action@master
         with:
           args: --delete
@@ -90,6 +90,7 @@ jobs:
           SOURCE_DIR: './public'
 
       - name: Deploy
+        if: ${{ env.SECRETS_CHECK == 'false' }}
         uses: jakejarvis/s3-sync-action@master
         with:
           args: --delete --exclude '.git/*' --exclude '.github/*'
