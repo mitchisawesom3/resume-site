@@ -12,19 +12,19 @@ jobs:
       SECRETS_CHECK: ${{ (secrets.AWS_KEY_ID == '') || (secrets.AWS_SECRET_ACCESS_KEY == '') }}
       CF_SECRETS_CHECK: ${{ ( secrets.CF_KEY_ID == '') || (secrets.CF_SECRET_ACCESS_KEY == '') || (secrets.CF_DISTRIBUTION == '') }}
       BUCKET_SECRET_CHECK: ${{ secrets.AWS_BUCKET == '' }}
-    outputs:
-      aws_key_id: ${{ steps.aws_key_id.outputs.aws_key_id }}
-      aws_secret_access_key: ${{ steps.aws_secret_access_key.outputs.aws_secret_access_key }}
-      cf_key_id: ${{ steps.cf_key_id.outputs.cf_key_id }}
-      cf_secret_access_key: ${{ steps.cf_secret_access_key.outputs.cf_secret_access_key }}
-      cf_distribution: ${{ steps.cf_distribution.outputs.cf_distribution }}
-      aws_bucket: ${{ steps.aws_bucket.outputs.aws_bucket }}
+#    outputs:
+#      aws_key_id: ${{ steps.aws_key_id.outputs.aws_key_id }}
+#      aws_secret_access_key: ${{ steps.aws_secret_access_key.outputs.aws_secret_access_key }}
+#      cf_key_id: ${{ steps.cf_key_id.outputs.cf_key_id }}
+#      cf_secret_access_key: ${{ steps.cf_secret_access_key.outputs.cf_secret_access_key }}
+#      cf_distribution: ${{ steps.cf_distribution.outputs.cf_distribution }}
+#      aws_bucket: ${{ steps.aws_bucket.outputs.aws_bucket }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
       - name: Configure Initial AWS Credentials
-        if: ${{ env.SECRETS_CHECK }} || ${{ env.CF_SECRETS_CHECK }} || ${{ env.BUCKET_SECRET_CHECK }}
+        if: ${{ env.SECRETS_CHECK == 'true' }} || ${{ env.CF_SECRETS_CHECK == 'true' }} || ${{ env.BUCKET_SECRET_CHECK == 'true' }}
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.INITIAL_ACCESS_KEY_ID }}
@@ -32,42 +32,42 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Read secrets into environment variables
-        if: ${{ env.SECRETS_CHECK }} || ${{ env.CF_SECRETS_CHECK }} || ${{ env.BUCKET_SECRET_CHECK }}
+        if: ${{ env.SECRETS_CHECK == 'true' }} || ${{ env.CF_SECRETS_CHECK == 'true' }} || ${{ env.BUCKET_SECRET_CHECK == 'true' }}
         uses: abhilash1in/aws-secrets-manager-action@v2.1.0
         with:
           secrets: /
           parse-json: true
 
       - name: Create Secrets for repo access to AWS
-        if: ${{ env.SECRETS_CHECK }}
+        if: ${{ env.SECRETS_CHECK == 'true' }}
         run: gh secret set AWS_KEY_ID --body "${{ env.__AWS_KEY_ID }}"; gh secret set AWS_SECRET_ACCESS_KEY --body "${{ env.__AWS_SECRET_ACCESS_KEY }}"
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
       - name: Create Secrets for CF invalidation access
-        if: ${{ env.CF_SECRETS_CHECK }}
+        if: ${{ env.CF_SECRETS_CHECK == 'true' }}
         run: gh secret set CF_KEY_ID --body "${{ env.__CF_KEY_ID }}"; gh secret set CF_SECRET_ACCESS_KEY --body "${{ env.__CF_SECRET_ACCESS_KEY }}"; gh secret set CF_DISTRIBUTION --body "${{ env.__CF_DISTRIBUTION }}"
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
       - name: Create Secret for Bucket name
-        if: ${{ env.BUCKET_SECRET_CHECK }}
+        if: ${{ env.BUCKET_SECRET_CHECK == 'true' }}
         run: gh secret set AWS_BUCKET --body "${{ env.__AWS_BUCKET }}"
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
 
-      - id: aws_key_id
-        run: echo "::set-output name=aws_key_id::${{ env.__AWS_KEY_ID }}"
-      - id: aws_secret_access_key
-        run: echo "::set-output name=aws_secret_access_key::${{ env.__AWS_SECRET_ACCESS_KEY }}"
-      - id: cf_key_id
-        run: echo "::set-output name=cf_key_id::${{ env.__CF_KEY_ID }}"
-      - id: cf_secret_access_key
-        run: echo "::set-output name=cf_secret_access_key::${{ env.__CF_SECRET_ACCESS_KEY }}"
-      - id: cf_distribution
-        run: echo "::set-output name=cf_distribution::${{ env.__CF_DISTRIBUTION }}"
-      - id: aws_bucket
-        run: echo "::set-output name=aws_bucket::${{ env.__AWS_BUCKET }}"
+#      - id: aws_key_id
+#        run: echo "::set-output name=aws_key_id::${{ env.__AWS_KEY_ID }}"
+#      - id: aws_secret_access_key
+#        run: echo "::set-output name=aws_secret_access_key::${{ env.__AWS_SECRET_ACCESS_KEY }}"
+#      - id: cf_key_id
+#        run: echo "::set-output name=cf_key_id::${{ env.__CF_KEY_ID }}"
+#      - id: cf_secret_access_key
+#        run: echo "::set-output name=cf_secret_access_key::${{ env.__CF_SECRET_ACCESS_KEY }}"
+#      - id: cf_distribution
+#        run: echo "::set-output name=cf_distribution::${{ env.__CF_DISTRIBUTION }}"
+#      - id: aws_bucket
+#        run: echo "::set-output name=aws_bucket::${{ env.__AWS_BUCKET }}"
 
   deploy:
     runs-on: ubuntu-latest
@@ -77,17 +77,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Deploy if secrets aren't set
-        if: ${{ env.SECRETS_CHECK == 'true' }}
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --delete
-        env:
-          AWS_S3_BUCKET: ${{ needs.configuresecrets.outputs.aws_bucket }}
-          AWS_ACCESS_KEY_ID: ${{ needs.configuresecrets.outputs.aws_key_id }}
-          AWS_SECRET_ACCESS_KEY: ${{ needs.configuresecrets.outputs.aws_secret_access_key }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          SOURCE_DIR: './public'
+#      - name: Deploy if secrets aren't set
+#        if: ${{ env.SECRETS_CHECK == 'true' }}
+#        uses: jakejarvis/s3-sync-action@master
+#        with:
+#          args: --delete
+#        env:
+#          AWS_S3_BUCKET: ${{ needs.configuresecrets.outputs.aws_bucket }}
+#          AWS_ACCESS_KEY_ID: ${{ needs.configuresecrets.outputs.aws_key_id }}
+#          AWS_SECRET_ACCESS_KEY: ${{ needs.configuresecrets.outputs.aws_secret_access_key }}
+#          AWS_REGION: ${{ secrets.AWS_REGION }}
+#          SOURCE_DIR: './public'
 
       - name: Deploy
         if: ${{ env.SECRETS_CHECK == 'false' }}
