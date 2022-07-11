@@ -9,3 +9,7 @@ class TestTitles:
   def test_title_about(self):
     self.driver.get('https://www.mitchbounds.com/about.html')
     assert self.driver.title == "About"
+
+  def test_title_projects(self):
+    self.driver.get('https://www.mitchbounds.com/projects.html')
+    assert self.driver.title == "Projects"
