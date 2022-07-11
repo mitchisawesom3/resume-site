@@ -17,7 +17,7 @@
     <!-- Navigation Bar -->
     <div class="navbar">
       <a href="index.html">Home</a>
-      <a class="current-page" href="projects.html">Link</a>
+      <a class="current-page" href="projects.html">Projects</a>
       <a href="about.html">About</a>
     </div>
 
@@ -25,11 +25,16 @@
     <div class="row">
       <div class="side">
         <h2>Resume Site</h2>
+        <p>More coming soon..</p>
       </div>
       <div class="main">
-        <h2>About</h2>
-        <img alt="System Architecture Diagram" src="images/resume-site-diagram.png"/>
-      </div>
+        <div class="resume-site">
+          <img alt="System Architecture Diagram" src="images/resume-site-diagram.png"/>
+          <h3><a href="https://github.com/mitchisaweom3/resume-sam">resume-sam</a></h3>
+          <p>The resume-sam repository contains <a href="https://github.com/mitchisawesom3/resume-sam/blob/master/template.yml">CloudFormation</a> to configure my AWS infrastructure. Some secrets in the repository need to be manually via the API or GitHub CLI. When pushing a change to the repo <a href="https://github.com/mitchisawesom3/resume-sam/blob/master/.github/workflows/deploy.yml">GitHub Actions</a> will push the CloudFormation to AWS. Once this is complete, it will configure secrets it obtains from Secrets Manager for IAM access keys and the bucket name. Finally it will update my API URL in the resume-site repo, though I want to see if I can use CloudFront for this instead.</p>
+          <h3><a href="https://github.com/mitchisawesom3/resume-site">resume-site</a></h3>
+          <p>The resume-site repository contains the <a href="https://github.com/mitchisawesom3/resume-site/tree/master/public">HTML, CSS, Javascript, and images</a> for this website. <a href="https://github.com/mitchisawesom3/resume-site/blob/master/.github/workflows/deploy.yml">GitHub Actions</a> is configured to </p>
+     </div>
     </div>
 
     <!-- Footer -->
