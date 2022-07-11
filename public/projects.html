@@ -29,7 +29,8 @@
       </div>
       <div class="main">
         <div class="resume-site">
-          <img alt="System Architecture Diagram" src="images/resume-site-diagram.png"/>
+          <source media="(min-width:900px)" srcset="images/resume-site-diagram-mobile.png"/>
+          <source media="(min-width:1100px)" srcset="images/resume-site-diagram.png"/>
           <h3><a href="https://github.com/mitchisaweom3/resume-sam">resume-sam</a></h3>
           <p>The resume-sam repository contains <a href="https://github.com/mitchisawesom3/resume-sam/blob/master/template.yml">CloudFormation</a> to configure my AWS infrastructure. Some secrets in the repository need to be manually via the API or GitHub CLI. When pushing a change to the repo <a href="https://github.com/mitchisawesom3/resume-sam/blob/master/.github/workflows/deploy.yml">GitHub Actions</a> will push the CloudFormation to AWS. Once this is complete, it will configure secrets it obtains from Secrets Manager for IAM access keys and the bucket name. Finally it will update my API URL in the resume-site repo, though I want to see if I can use CloudFront for this instead.</p>
           <h3><a href="https://github.com/mitchisawesom3/resume-site">resume-site</a></h3>
